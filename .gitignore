@@ -1,0 +1,28 @@
+# ── Data files (too large) ──
+data/
+
+# ── Logs ──
+logs/*.log
+!logs/etl_pipeline_final.log
+
+# ── Python cache ──
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environment ──
+venv/
+env/
+.venv/
+
+# ── Database credentials ──
+config/settings.py
+
+# ── Test files ──
+test_*.py
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
