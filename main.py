@@ -39,7 +39,7 @@ def run_pipeline():
     dim_temps   = build_dim_temps()
     dim_region  = build_dim_region(regions)
     dim_produit = build_dim_produit(produits_clean)
-    dim_client  = build_dim_client(clients_clean, commandes_clean)
+    dim_client = build_dim_client(clients_clean, commandes_clean, dim_region)
     dim_livreur = build_dim_livreur(commandes_clean)
     fait_ventes = build_fait_ventes(
         commandes_clean, dim_temps, dim_client,

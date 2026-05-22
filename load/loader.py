@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 from sqlalchemy import create_engine, text
 from config.settings import DATABASE_URL, SCHEMA_STAGING, SCHEMA_DWH
@@ -16,27 +18,37 @@ def create_schemas(engine):
         conn.commit()
     logger.info(f"[LOAD] Schémas créés: {SCHEMA_STAGING}, {SCHEMA_DWH}")
 
-def load_table(
-    df: pd.DataFrame,
-    table_name: str,
-    schema: str,
-    engine,
-    if_exists: str = 'replace'
-):
+def load_table(df, table_name, schema, engine):
     """
-    Loads a DataFrame into PostgreSQL.
-    if_exists='replace' drops and recreates the table each run.
+    Charge une dimension avec TRUNCATE + INSERT au lieu de replace.
+    Évite l'erreur DependentObjectsStillExist sur les FK et vues matérialisées.
     """
+    with engine.begin() as conn:
+        # Vérifier si la table existe déjà
+        exists = conn.execute(text(f"""
+            SELECT EXISTS (
+                SELECT 1 FROM information_schema.tables
+                WHERE table_schema = '{schema}'
+                AND table_name = '{table_name}'
+            )
+        """)).scalar()
+
+        if exists:
+            # TRUNCATE CASCADE pour vider sans supprimer la table
+            conn.execute(text(f'TRUNCATE TABLE {schema}.{table_name} CASCADE'))
+            logging.info(f"[LOAD] {table_name} — table vidée (TRUNCATE CASCADE)")
+
+    # INSERT des nouvelles données
     df.to_sql(
         name=table_name,
         con=engine,
         schema=schema,
-        if_exists=if_exists,
+        if_exists='append',   # append car la table existe déjà après TRUNCATE
         index=False,
         method='multi',
         chunksize=1000
     )
-    logger.info(f"[LOAD] {schema}.{table_name} — {len(df)} lignes chargées")
+    logging.info(f"[LOAD] {table_name} — {len(df)} lignes chargées")
 
 def load_all(
     dim_temps,
@@ -50,6 +62,12 @@ def load_all(
     create_schemas(engine)
 
     logger.info("[LOAD] Début du chargement vers PostgreSQL...")
+
+    # ← AJOUT : vider fait_ventes EN PREMIER car il référence les dimensions
+    with engine.begin() as conn:
+        conn.execute(text('TRUNCATE TABLE dwh_mexora.fait_ventes CASCADE'))
+        logger.info("[LOAD] fait_ventes — vidée en premier")
+
 
     # Load dimensions first (fact table depends on them)
     load_table(dim_temps,   'dim_temps',   SCHEMA_DWH, engine)
