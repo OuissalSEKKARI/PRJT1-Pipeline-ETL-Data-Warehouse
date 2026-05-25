@@ -373,7 +373,7 @@ logger.info(f"[TRANSFORM] R3 inactifs — {inactifs} produits inactifs conservé
 
 ### DIM_TEMPS
 
-**Logique :** Génération d'un calendrier continu du 2020-01-01 au 2025-12-31. Enrichi avec les jours fériés marocains (liste fixe) et les périodes Ramadan (2022, 2023, 2024).
+**Logique :** Génération d'un calendrier continu du 2020-01-01 au 2025-12-31. Enrichi avec les jours fériés marocains (liste fixe) et les périodes Ramadan (2022, 2023, 2024, 2025).
 
 **Résultat :** 2 192 lignes générées
 
@@ -388,7 +388,7 @@ logger.info(f"[TRANSFORM] R3 inactifs — {inactifs} produits inactifs conservé
 |       N       |     P004      |   Téléphones   | 2023-09-22 | 2024-02-28 |   False   |
 |      N+1      |     P004      |  Smartphones   | 2024-03-01 | 9999-12-31 |   True    |
 
-**Limite actuelle :** la dimension contient bien les deux versions du produit, mais `build_fait_ventes()` joint actuellement les ventes avec l'enregistrement actif uniquement. Les ventes historiques de P004 ne sont donc pas encore rattachées automatiquement à l'ancienne version `Téléphones`.
+Les ventes antérieures à mars 2024 sont correctement rattachées à la version Téléphones via une jointure temporelle sur date_commande BETWEEN date_debut AND date_fin.
 
 **Résultat :** 41 lignes (40 produits + 1 enregistrement SCD supplémentaire)
 
@@ -429,7 +429,7 @@ Les clients sans commandes récentes sont classés `Bronze` par défaut.
 | Commandes |  R5   | Quantités ≤ 0 supprimées             |              499 |
 | Commandes |  R6   | Commandes test (prix=0) supprimées   |              482 |
 | Commandes |  R7   | Livreurs manquants → `-1`            |            3 427 |
-| Commandes |  R8   | Montants TTC/HT recalculés           |   49 019 (toutes) |
+| Commandes |  R8   | Montants TTC/HT recalculés           |  49 019 (toutes) |
 | Clients   |  R1   | Doublons sur email supprimés         |              154 |
 | Clients   |  R2   | Sexe standardisé m/f/inconnu         |    890 → inconnu |
 | Clients   |  R3   | Dates naissance invalides → NaT      |              174 |
@@ -451,9 +451,9 @@ Les clients sans commandes récentes sont classés `Bronze` par défaut.
 | `dwh_mexora.dim_produit` |              41 | immédiat    |
 | `dwh_mexora.dim_client`  |           4 996 | immédiat    |
 | `dwh_mexora.dim_livreur` |              51 | immédiat    |
-| `dwh_mexora.fait_ventes` |          49 019 | ~9 secondes |
+| `dwh_mexora.fait_ventes` |          36 705 | ~7 secondes |
 
-Pipeline complet exécuté en **14 secondes** (02:51:36 → 02:51:50).
+Pipeline complet exécuté en **12 secondes** (23:23:47 → 23:23:59), d'après `logs/etl_pipeline_final.log`.
 
 ---
 

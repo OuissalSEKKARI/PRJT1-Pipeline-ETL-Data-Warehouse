@@ -222,7 +222,7 @@ CREATE TABLE dwh_mexora.fait_ventes (
 
 COMMENT ON TABLE dwh_mexora.fait_ventes IS
     'Table de faits centrale. Granularité : 1 ligne = 1 commande. '
-    '49 019 lignes après nettoyage ETL (51 500 brutes).';
+    '36 705 lignes chargées après nettoyage et jointures DWH (51 500 lignes brutes).';
 
 COMMENT ON COLUMN dwh_mexora.fait_ventes.montant_ht IS
     'Mesure additive : peut être sommée par région, produit, période.';
