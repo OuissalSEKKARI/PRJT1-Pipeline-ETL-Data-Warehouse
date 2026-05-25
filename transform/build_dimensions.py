@@ -363,17 +363,18 @@ def build_fait_ventes(
         left_on='id_client', right_on='id_client_nk', how='left'
     )
 
-    # Join produit SK (active records only)
-    produit_map = (
-        dim_produit
-        .sort_values('est_actif', ascending=False)
-        .drop_duplicates(subset=['id_produit_nk'], keep='first')
-        [['id_produit_nk', 'id_produit_sk']]
-    )
-    df = df.merge(
-        produit_map,
-        left_on='id_produit', right_on='id_produit_nk', how='left'
-    )
+    # Join produit SK - date-aware SCD Type 2 join
+    df['date_commande_dt'] = pd.to_datetime(df['date_commande'])
+
+    produit_map = dim_produit[['id_produit_nk', 'id_produit_sk', 'date_debut', 'date_fin']].copy()
+    produit_map['date_debut'] = pd.to_datetime(produit_map['date_debut'])
+    produit_map['date_fin']   = pd.to_datetime(produit_map['date_fin'])
+
+    df = df.merge(produit_map, left_on='id_produit', right_on='id_produit_nk', how='left')
+    df = df[
+        (df['date_commande_dt'] >= df['date_debut']) &
+        (df['date_commande_dt'] <= df['date_fin'])
+    ]
 
     # Join region SK — FIX: colonne 'ville' (renommée dans build_dim_region)
     region_map = dim_region[['ville', 'id_region']]

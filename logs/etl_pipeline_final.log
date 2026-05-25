@@ -1,54 +1,35 @@
-2026-05-09 02:51:36,523 — INFO — main — ==================================================
-2026-05-09 02:51:36,524 — INFO — main — MEXORA ETL PIPELINE — DÉMARRAGE
-2026-05-09 02:51:36,524 — INFO — main — ==================================================
-2026-05-09 02:51:36,525 — INFO — main — [1/3] EXTRACTION...
-2026-05-09 02:51:36,528 — INFO — extractor — [EXTRACT] regions — 20 lignes extraites
-2026-05-09 02:51:36,601 — INFO — extractor — [EXTRACT] commandes — 51500 lignes extraites
-2026-05-09 02:51:36,614 — INFO — extractor — [EXTRACT] clients — 5150 lignes extraites
-2026-05-09 02:51:36,616 — INFO — extractor — [EXTRACT] produits — 40 lignes extraites
-2026-05-09 02:51:36,617 — INFO — main — [2/3] TRANSFORMATION...
-2026-05-09 02:51:36,617 — INFO — clean_commandes — [TRANSFORM] commandes — début: 51500 lignes
-2026-05-09 02:51:36,627 — INFO — clean_commandes — [TRANSFORM] R1 doublons — 1500 lignes supprimées
-2026-05-09 02:51:38,236 — INFO — clean_commandes — [TRANSFORM] R2 date_commande — 0 dates invalides
-2026-05-09 02:51:39,663 — INFO — clean_commandes — [TRANSFORM] R2 date_livraison — 0 dates invalides
-2026-05-09 02:51:39,686 — INFO — clean_commandes — [TRANSFORM] R3 villes — 0 villes non reconnues
-2026-05-09 02:51:39,722 — INFO — clean_commandes — [TRANSFORM] R4 statuts — tous les statuts reconnus
-2026-05-09 02:51:39,734 — INFO — clean_commandes — [TRANSFORM] R5 quantités — 499 lignes supprimées (quantité <= 0)
-2026-05-09 02:51:39,750 — INFO — clean_commandes — [TRANSFORM] R6 prix nuls — 482 commandes test supprimées
-2026-05-09 02:51:39,754 — INFO — clean_commandes — [TRANSFORM] R7 livreurs — 3427 valeurs manquantes → '-1'
-2026-05-09 02:51:39,771 — INFO — clean_commandes — [TRANSFORM] commandes — fin: 49019 lignes (2481 supprimées au total)
-2026-05-09 02:51:39,772 — INFO — clean_clients — [TRANSFORM] clients — début: 5150 lignes
-2026-05-09 02:51:39,783 — INFO — clean_clients — [TRANSFORM] R1 doublons — 154 doublons supprimés
-2026-05-09 02:51:39,786 — INFO — clean_clients — [TRANSFORM] R2 sexe — 890 valeurs non reconnues → 'inconnu'
-2026-05-09 02:51:39,790 — INFO — clean_clients — [TRANSFORM] R3 dates naissance — 174 dates invalides supprimées
-2026-05-09 02:51:39,800 — INFO — clean_clients — [TRANSFORM] R4 emails — 243 emails invalides supprimés
-2026-05-09 02:51:39,805 — INFO — clean_clients — [TRANSFORM] R5 villes — 0 villes non reconnues
-2026-05-09 02:51:39,810 — INFO — clean_clients — [TRANSFORM] R5 villes — 0 villes non reconnues
-2026-05-09 02:51:39,814 — INFO — clean_clients — [TRANSFORM] clients — fin: 4996 lignes (154 supprimées au total)
-2026-05-09 02:51:39,815 — INFO — clean_produits — [TRANSFORM] produits — début: 40 lignes
-2026-05-09 02:51:39,817 — INFO — clean_produits — [TRANSFORM] R1 casse — catégories normalisées en Title Case
-2026-05-09 02:51:39,820 — INFO — clean_produits — [TRANSFORM] R2 prix — 2 prix nuls remplacés par médiane de catégorie
-2026-05-09 02:51:39,821 — INFO — clean_produits — [TRANSFORM] R3 inactifs — 2 produits inactifs conservés pour SCD Type 2
-2026-05-09 02:51:39,822 — INFO — clean_produits — [TRANSFORM] produits — fin: 40 lignes
-2026-05-09 02:51:40,034 — INFO — build_dimensions — [BUILD] client_id_mapping — 154 IDs remappés
-2026-05-09 02:51:40,080 — INFO — build_dimensions — [BUILD] dim_temps — 2192 lignes générées
-2026-05-09 02:51:40,081 — INFO — build_dimensions — [BUILD] dim_region — 20 lignes
-2026-05-09 02:51:40,084 — INFO — build_dimensions — [BUILD] dim_produit — 41 lignes (dont SCD Type 2)
-2026-05-09 02:51:40,117 — INFO — build_dimensions — [BUILD] dim_client — 4996 lignes
-2026-05-09 02:51:40,118 — INFO — build_dimensions — [BUILD] segments — {'Gold': 2143, 'Bronze': 2107, 'Silver': 746}
-2026-05-09 02:51:40,123 — INFO — build_dimensions — [BUILD] dim_livreur — 51 lignes
-2026-05-09 02:51:40,632 — INFO — build_dimensions — [BUILD] fait_ventes — IDs clients remappés
-2026-05-09 02:51:41,231 — INFO — build_dimensions — [BUILD] fait_ventes — 49019 lignes
-2026-05-09 02:51:41,235 — INFO — main — [3/3] CHARGEMENT...
-2026-05-09 02:51:41,346 — INFO — loader — [LOAD] Schémas créés: staging_mexora, dwh_mexora
-2026-05-09 02:51:41,346 — INFO — loader — [LOAD] Début du chargement vers PostgreSQL...
-2026-05-09 02:51:41,855 — INFO — loader — [LOAD] dwh_mexora.dim_temps — 2192 lignes chargées
-2026-05-09 02:51:41,882 — INFO — loader — [LOAD] dwh_mexora.dim_region — 20 lignes chargées
-2026-05-09 02:51:41,917 — INFO — loader — [LOAD] dwh_mexora.dim_produit — 41 lignes chargées
-2026-05-09 02:51:42,599 — INFO — loader — [LOAD] dwh_mexora.dim_client — 4996 lignes chargées
-2026-05-09 02:51:42,630 — INFO — loader — [LOAD] dwh_mexora.dim_livreur — 51 lignes chargées
-2026-05-09 02:51:50,876 — INFO — loader — [LOAD] dwh_mexora.fait_ventes — 49019 lignes chargées
-2026-05-09 02:51:50,876 — INFO — loader — [LOAD] ✅ Chargement terminé avec succès!
-2026-05-09 02:51:50,877 — INFO — main — ==================================================
-2026-05-09 02:51:50,877 — INFO — main — PIPELINE TERMINÉ AVEC SUCCÈS ✅
-2026-05-09 02:51:50,877 — INFO — main — ==================================================
+2026-05-25 23:23:47,292 — INFO — main — ==================================================
+2026-05-25 23:23:47,293 — INFO — main — MEXORA ETL PIPELINE — DÉMARRAGE
+2026-05-25 23:23:47,293 — INFO — main — ==================================================
+2026-05-25 23:23:47,293 — INFO — main — [1/3] EXTRACTION...
+2026-05-25 23:23:47,390 — INFO — main — [2/3] TRANSFORMATION...
+2026-05-25 23:23:50,713 — INFO — clean_clients — [TRANSFORM] clients — début: 5150 lignes
+2026-05-25 23:23:50,720 — INFO — clean_clients — [TRANSFORM] R1 doublons — 154 doublons supprimés
+2026-05-25 23:23:50,725 — INFO — clean_clients — [TRANSFORM] R2 sexe — 890 valeurs non reconnues → 'inconnu'
+2026-05-25 23:23:50,729 — INFO — clean_clients — [TRANSFORM] R3 dates naissance — 174 dates invalides supprimées
+2026-05-25 23:23:50,736 — INFO — clean_clients — [TRANSFORM] R4 emails — 243 emails invalides supprimés
+2026-05-25 23:23:50,742 — INFO — clean_clients — [TRANSFORM] R5 villes — 0 villes non reconnues
+2026-05-25 23:23:50,746 — INFO — clean_clients — [TRANSFORM] R5 villes — 0 villes non reconnues
+2026-05-25 23:23:50,749 — INFO — clean_clients — [TRANSFORM] clients — fin: 4996 lignes (154 supprimées au total)
+2026-05-25 23:23:50,750 — INFO — clean_produits — [TRANSFORM] produits — début: 40 lignes
+2026-05-25 23:23:50,751 — INFO — clean_produits — [TRANSFORM] R1 casse — catégories normalisées en Title Case
+2026-05-25 23:23:50,754 — INFO — clean_produits — [TRANSFORM] R2 prix — 2 prix nuls remplacés par médiane de catégorie
+2026-05-25 23:23:50,754 — INFO — clean_produits — [TRANSFORM] R3 inactifs — 2 produits inactifs conservés pour SCD Type 2
+2026-05-25 23:23:50,755 — INFO — clean_produits — [TRANSFORM] produits — fin: 40 lignes
+2026-05-25 23:23:50,926 — INFO — build_dimensions — [BUILD] client_id_mapping — 154 IDs remappés
+2026-05-25 23:23:50,975 — INFO — build_dimensions — [BUILD] dim_temps — 2192 lignes générées
+2026-05-25 23:23:50,977 — INFO — build_dimensions — [BUILD] dim_region — 20 lignes
+2026-05-25 23:23:50,979 — INFO — build_dimensions — [BUILD] dim_produit — 41 lignes (dont SCD Type 2)
+2026-05-25 23:23:51,009 — INFO — build_dimensions — [BUILD] dim_client — 4996 lignes
+2026-05-25 23:23:51,011 — INFO — build_dimensions — [BUILD] segments — {'Gold': 2143, 'Bronze': 2107, 'Silver': 746}
+2026-05-25 23:23:51,016 — INFO — build_dimensions — [BUILD] dim_livreur — 51 lignes
+2026-05-25 23:23:51,403 — INFO — build_dimensions — [BUILD] fait_ventes — IDs clients remappés
+2026-05-25 23:23:51,933 — INFO — build_dimensions — [BUILD] fait_ventes — 36705 lignes
+2026-05-25 23:23:51,935 — INFO — main — [3/3] CHARGEMENT...
+2026-05-25 23:23:52,145 — INFO — loader — [LOAD] Schémas créés: staging_mexora, dwh_mexora
+2026-05-25 23:23:52,146 — INFO — loader — [LOAD] Début du chargement vers PostgreSQL...
+2026-05-25 23:23:52,149 — INFO — loader — [LOAD] fait_ventes — vidée en premier
+2026-05-25 23:23:59,214 — INFO — loader — [LOAD] ✅ Chargement terminé avec succès!
+2026-05-25 23:23:59,216 — INFO — main — ==================================================
+2026-05-25 23:23:59,216 — INFO — main — PIPELINE TERMINÉ AVEC SUCCÈS ✅
+2026-05-25 23:23:59,216 — INFO — main — ==================================================

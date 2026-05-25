@@ -39,6 +39,7 @@ DROP MATERIALIZED VIEW IF EXISTS reporting_mexora.mv_performance_livreurs  CASCA
 
 CREATE TABLE dwh_mexora.dim_temps (
     id_date          INTEGER      PRIMARY KEY,  -- format YYYYMMDD
+    date_complete    DATE         NOT NULL,
     jour             SMALLINT     NOT NULL CHECK (jour BETWEEN 1 AND 31),
     mois             SMALLINT     NOT NULL CHECK (mois BETWEEN 1 AND 12),
     trimestre        SMALLINT     NOT NULL CHECK (trimestre BETWEEN 1 AND 4),
